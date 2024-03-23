@@ -1,5 +1,5 @@
 // This code was created by Daniel Plata. 
-// In help with ChatGPT,
+// In help with ChatGPT, and P5 Documentation
 
 let stars = []
 let numStars = 600
@@ -9,8 +9,6 @@ let numMet = 600
 
 let ast = []
 let numAst = 10
-
-let r = (255,0,0)
 
 function setup() {
     createCanvas(windowWidth, windowHeight)
@@ -96,7 +94,6 @@ function displayMeteors(meteors) {
 }
 
 function updateAst(ast) {
-    let r = 'rgb(100%,0%, 0%)'
     fill(random(['#FFCC00',255]))
     ellipse(ast.x,ast.y,ast.size,ast.size)
 }
