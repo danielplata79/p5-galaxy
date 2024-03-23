@@ -1,66 +1,57 @@
-let anim = true
-
-let cirX = 10
-let cirY = 10
-let cirR = 50
-
-let sp = 5
-
-let angle = 0
+let meteor;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  angleMode(DEGREES)
-
-  let btn = createButton("Start")
-  btn.position(150,350)
-
-  btn.mouseClicked(() => {
-    btn.hide()
-  })
-
-  for (let num = 0; num < numCir; num++) {
-    let x = random(width)
-    let y = random(height)
-    let sz = random(20, 50)
-  }
-
+  meteor = new Meteor();
 }
 
 function draw() {
   background(0);
-  
-  if (!anim) {
-    textSize(40)
-    fill(255)
-    text("New Animation!", 60, 150)
-  } else {
+  meteor.update();
+  meteor.display();
+}
 
-    var numCir = 10;
-    fill(0,0,255) 
-
-
-    
-    cirX = cirX + sp
-    cirY = cirY + sp
-    
-    if (cirX > windowWidth) {
-      cirX = 0
-    } if (cirY > windowHeight) {
-      cirY = 0
+class Meteor {
+  constructor() {
+    this.x = random(width); // Starting x position
+    this.y = random(-100, -10); // Starting y position
+    this.speed = random(2, 5); // Speed of meteor
+    this.len = random(30, 60); // Length of meteor tail
+    this.thickness = random(2, 4); // Thickness of meteor
+    this.tail = []; // Array to store tail positions
+    for (let i = 0; i < this.len; i++) {
+      this.tail.push(createVector(this.x, this.y));
     }
-
-	  fill(0,0,255)
-    translate(150,400)
-	  rotate(45)
-	  rotate(angle)
-	  rect(170, 140, 5, 120)	
-    angle++
   }
 
-  class Star {
-    constructor() {
-      this.x random(width);
+  update() {
+    this.x += this.speed; // Move meteor
+    this.y += this.speed * 0.5; // Move meteor diagonally
+
+    // Update tail
+    this.tail.pop();
+    this.tail.unshift(createVector(this.x, this.y));
+
+    // If meteor goes off-screen, reset
+    if (this.x > width || this.y > height) {
+      this.x = random(width);
+      this.y = random(-100, -10);
     }
+  }
+
+  display() {
+    // Draw tail
+    for (let i = 0; i < this.len - 1; i++) {
+      let pos1 = this.tail[i];
+      let pos2 = this.tail[i + 1];
+      strokeWeight(this.thickness - i * 0.1);
+      stroke(255, 150 - i * 2);
+      line(pos1.x, pos1.y, pos2.x, pos2.y);
+    }
+
+    // Draw head
+    strokeWeight(this.thickness);
+    stroke(255);
+    point(this.x, this.y);
   }
 }
